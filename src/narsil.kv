@@ -1,0 +1,136 @@
+#:kivy 1.1.0
+
+Root:
+
+	txt_filename: txt_filename
+	txt_log: txt_log
+
+	title: 'Narsil - The Spy Agency Pain in the Ass'
+    size_hint: 1, 1
+    pos_hint: {'center_x': .5, 'center_y': .5}
+    do_default_tab: False
+	tab_width: 200
+
+    TabbedPanelItem:
+        text: 'Nasty EXIF'
+		BoxLayout:
+			orientation: 'vertical'
+			
+			# Title Description
+			Label:
+				color: 0.21, 0.67, 0.84, 1
+				id: txt_filename
+				text: 'Nasty EXIF modifies EXIF data of an image file or directory to look as if it has been taken on a high profile location.'
+				size_hint: 1, 0.1
+			
+			# Select location bar
+			BoxLayout:
+				size_hint: 1, 0.3
+				orientation: 'horizontal'
+				Label:
+					text: 'Select a fake location'
+					size_hint: 0.3, 1
+					canvas.before:
+						Color:
+							rgba: 0.21, 0.67, 0.84, 1
+						Rectangle:
+							pos: self.pos
+							size: self.size							
+				BoxLayout:
+					orientation: 'vertical'
+					ToggleButton:
+						text: 'Fort Meade'
+						on_release: root.set_location('Fort Meade')
+					ToggleButton:
+						text: 'Pentagon'
+						on_release: root.set_location('Pentagon')
+					ToggleButton:
+						text: 'Keith Alexander\'s Mansion'
+						on_release: root.set_location('Keith Alexanders Mansion')
+						
+			# Select and Run Buttons
+			BoxLayout:
+				size_hint: 1, 0.1
+				orientation: 'horizontal'			
+				Button:
+					text: 'Select Image File or Directory'
+					size_hint: 0.7, 1
+					on_release: root.show_load()
+				Button:
+					text: 'Run'
+					size_hint: 0.3, 1
+					on_release: root.run_transform()
+					bold: True
+					background_color: 0.21, 0.67, 0.84, 1					
+
+			# Output panes
+			Label:
+				id: txt_filename
+				text: 'File Name or Directory'
+				size_hint: 1, 0.1
+				italic: True
+			Label:
+				id: txt_log
+				text_size: self.width,self.height
+				valign: 'top'
+				halign: 'left'				
+				text: 'Nasty EXIF up and ready ...'
+				color: 0.21, 0.67, 0.84, 1				
+				canvas.before:
+					Color:
+						rgba: 0, 0, 0, 1
+					Rectangle:
+						pos: self.pos
+						size: self.size					
+				
+    TabbedPanelItem:
+        text: 'Encrypted ZIP Bomb'
+        BoxLayout:
+            Label:
+                text: 'Yes, there is more to come.'
+
+
+<Error>:
+
+	txt_error: txt_error
+
+	BoxLayout:
+        size: root.size
+        pos: root.pos
+		orientation: 'vertical'
+		Label:
+			id: txt_error
+			size_hint: 1, 0.7
+			text: root.message
+			color: 1,1,1,1
+			bold: True
+			canvas.before:
+				Color:
+					rgba: 0.8, 0, 0, 1
+				Rectangle:
+					pos: self.pos
+					size: self.size	
+		Button:
+			text: "Cancel"
+			size_hint: 1, 0.3			
+			on_release: root.cancel()					
+				
+<LoadDialog>:
+    BoxLayout:
+        size: root.size
+        pos: root.pos
+        orientation: "vertical"
+        FileChooserListView:
+            id: filechooser
+			dirselect: True
+
+        BoxLayout:
+            size_hint_y: None
+            height: 30
+            Button:
+                text: "Cancel"
+                on_release: root.cancel()
+
+            Button:
+                text: "Load"
+                on_release: root.load(filechooser.path, filechooser.selection)				
